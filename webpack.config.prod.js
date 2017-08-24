@@ -6,14 +6,15 @@ export default {
   debug: true,
   devtool: 'source-map',
   noInfo: false,
-  entry: [
-    path.resolve(__dirname, 'src/index')
-  ],
+  entry: {
+    main : path.resolve(__dirname, 'src/index'),
+    vendor : path.resolve(__dirname, 'src/vendor')
+    },
   target: 'web',
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
-    filename: 'bundle.js'
+    filename: '[name].js'
   },
   plugins: [
     // create html file that includes reference to bundle JS
@@ -32,6 +33,12 @@ export default {
             minifyURLs : true
         },
         inject : true
+    }),
+
+
+    // use CommonChunkPlugin to bundle 3rd party library into seperate file
+    new webpack.optimize.CommonsChunkPlugin({
+        name : 'vendor'
     }),
 
     // Eleminate duplicate package when generating bundle
