@@ -1,6 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import WebpackMd5Hash from "webpack-md5-hash";
 
 export default {
   debug: true,
@@ -14,9 +15,12 @@ export default {
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
-    filename: '[name].js'
+    filename: '[name].[chunkhash].js'
   },
   plugins: [
+      // hash file name using md5 so that their name only change when file changed
+      new WebpackMd5Hash(),
+
     // create html file that includes reference to bundle JS
     new HtmlWebpackPlugin({
         template : './src/index.html',
